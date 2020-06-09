@@ -1,0 +1,34 @@
+.container {
+  margin-top: 40px;
+}
+
+.search-box {
+  display: flex;
+
+}
+
+.form-control {
+  border-radius: 0%;
+}
+
+.user-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+#searchName {
+  width: 20% !important;
+}
+
+.dateLocation,
+.checkboxes,
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-control.ng-invalid.ng-touched {
+  border: 2px solid red;
+
+}
