@@ -1,101 +1,106 @@
 <div class="container ">
+
+  <!-- Search Box -->
+  <div class="form-group ">
+    <label for="searchName">Create User</label>
+    <div class="search-box">
+      <input type="search" required id="searchName" minlength="3" maxlength="10" class="form-control"
+        [(ngModel)]="searchQuery" name="adid" #searchBox="ngModel" placeholder="Enter AD ID to search">
+      <button class="btn btn-primary" (click)="searchEmployee()">
+        <i class=" fa fa-search"></i>
+      </button>
+    </div>
+    <!-- validation error for search -->
+    <div class="my-1" *ngIf="searchBox.invalid &&  searchBox.touched">
+      <span class="text-danger" *ngIf="searchBox.errors.minlength">ADID should have minimum 3 chracters</span>
+      <span class="text-danger" *ngIf="searchBox.errors.maxlength">ADID should have maximum 3 chracters</span>
+      <span class="text-danger" *ngIf="searchBox.errors.required">ADID required</span>
+    </div>
+  </div>
+
+  <!-- Employee DATA -->
   <form class="myForm " #myForm="ngForm" (ngSubmit)="submitEmployeeDetails(myForm)">
-    <div class="form-group ">
+    <div class=" user-details pt-4">
+      <!-- 1 way binding for read-only fields, [ngModel]="<varName>" -->
+      <input class="form-control" type="text" [ngModel]="empADID" name="employeeId" placeholder="Employee ID" readonly>
+      <input class="form-control" type="text" [ngModel]="empName" name="employeeName" placeholder="Employee Name"
+        readonly>
+      <input class="form-control" type="text" [ngModel]="empEmail" name="employeeEmail" placeholder="Email ID" readonly>
+    </div>
 
-      <!-- search-Box -->
+    <div class="dateLocation pt-4">
+      <div>
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" class="form-control" ngModel name="dateJoin" #dateJoin="ngModel">
 
-      <label for="searchName">Create User</label>
-      <div class="search-box">
-        <input type="search" required id="searchName" minlength="3" maxlength="10" class="form-control" ngModel
-          name="adid" #empADID="ngModel">
-        <button class="btn btn-primary" (click)="searchEmployee(empADID.value)"><i class=" fa fa-search"></i></button>
       </div>
+      <div>
+        <label>Country</label>
+        <div class="dropdown">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{countrySelected && countrySelected.Name ? countrySelected.Name : 'Select Country'}}
+          </a>
 
-      <!-- Employee DATA -->
-
-      <div class="alert alert-danger" *ngIf="empADID.invalid &&  empADID.touched">
-        <div class="alert alert-danger" *ngIf="empADID.errors.minlength">ADID should have minimum 3 chracters</div>
-        <div class="alert alert-danger" *ngIf="empADID.errors.maxlength">ADID should have maximum 3 chracters</div>
-        <div class="alert alert-danger" *ngIf="empADID.errors.required">ADID required</div>
-      </div>
-
-      <div class=" user-details pt-4">
-        <p *ngIf="EmployeeData.EmployeeID">{{EmployeeData.EmployeeID}} </p>
-        <input class="form-control" type="text" ngModel name="employeeId" placeholder="Employee ID" readonly>
-        <input class="form-control" type="text" ngModel name="employeeName" placeholder="Employee Name" readonly>
-        <input class="form-control" type="text" ngModel name="employeeEmail" placeholder="Email ID" readonly>
-      </div>
-      <div class="dateLocation pt-4">
-        <div>
-          <label for="startDate">Start Date</label>
-          <input type="date" id="startDate" class="form-control" ngModel name="dateJoin" #dateJoin="ngModel">
-
-        </div>
-        <div>
-          <label>Country</label>
-
-          <div class="dropdown">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{countrySelected}}
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <!-- No need to use ngModel, siply rendering options here -->
+            <a *ngFor="let country of countriesList" (click)="countryChange(country)" class="dropdown-item">
+              {{country.Name}}
             </a>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a *ngFor="let country of countriesList" ngModel name="countryValue" #countryValue="ngModel"
-                (click)="countryChange(countryValue)" class="dropdown-item">{{country.Name}}</a>
-
-            </div>
           </div>
         </div>
-        <div>
-          <label>Locations</label>
+      </div>
+      <div>
+        <label>Locations</label>
 
-          <div class="dropdown">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              All Locations
+        <div class="dropdown">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            All Locations
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" *ngFor="let locations of LocationsList">
+              {{locations.Name}}
             </a>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" *ngFor="let locations of LocationsList" href="#">{{locations.Name}}</a>
-
-            </div>
           </div>
         </div>
-
-
-
-        <!-- Checkboxes         -->
-
       </div>
-      <h4 class="mt-4">Acess Permission</h4>
-      <div class="checkboxes mt-5">
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" ngModel name="pfApplication" #pfApplication="ngModel"
-            id="customCheck1">
-          <label class="custom-control-label" for="customCheck1">PF applications</label>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" ngModel name="reports" #reports="ngModel"
-            id="customCheck2">
-          <label class="custom-control-label" for="customCheck2">Reports</label>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" ngModel name="manageUsers" #manageUsers="ngModel"
-            id="customCheck3">
-          <label class="custom-control-label" for="customCheck3">Manage users</label>
-        </div>
+
+    </div>
+
+    <!-- Checkboxes         -->
+    <h4 class="mt-4">Acess Permission</h4>
+    <div class="checkboxes mt-5">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" ngModel name="pfApplication" #pfApplication="ngModel"
+          id="customCheck1">
+        <label class="custom-control-label" for="customCheck1">PF applications</label>
       </div>
-      <div class="buttons mt-5">
-        <div>
-          <button class="btn btn-light">RESET</button>
-        </div>
-        <div>
-          <button class="btn btn-light">CANCEL</button>
-          <button class="btn btn-primary pl-4" [disabled]="empADID.invalid">CREATE</button>
-        </div>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" ngModel name="reports" #reports="ngModel" id="customCheck2">
+        <label class="custom-control-label" for="customCheck2">Reports</label>
+      </div>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" ngModel name="manageUsers" #manageUsers="ngModel"
+          id="customCheck3">
+        <label class="custom-control-label" for="customCheck3">Manage users</label>
       </div>
     </div>
+
+    <div class="buttons mt-5">
+      <div>
+        <button class="btn btn-light">RESET</button>
+      </div>
+      <div>
+        <button class="btn btn-light">CANCEL</button>
+        <button class="btn btn-primary pl-4" [disabled]="searchBox.invalid">CREATE</button>
+      </div>
+    </div>
+
+
     <p>{{myForm.value | json}}</p>
 
   </form>

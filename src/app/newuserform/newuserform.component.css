@@ -4,7 +4,6 @@
 
 .search-box {
   display: flex;
-
 }
 
 .form-control {
@@ -18,7 +17,7 @@
 }
 
 #searchName {
-  width: 20% !important;
+  width: 300px !important;
 }
 
 .dateLocation,
@@ -30,5 +29,4 @@
 
 .form-control.ng-invalid.ng-touched {
   border: 2px solid red;
-
 }

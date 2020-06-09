@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
 import { UserService } from '../user.service';
 
 @Component({
@@ -9,46 +8,45 @@ import { UserService } from '../user.service';
 })
 export class NewuserformComponent implements OnInit {
   countriesList: any[] = [];
+  countrySelected: any;
+
   LocationsList: any[] = [];
-  EmployeeData: any;
-  countrySelected;
-  empID: string;
-  email: string = "";
-  adID: string = "";
-  name: string = "";
 
+  // for search box, default value
+  searchQuery = 'aprya';
 
-  constructor(private httpClient: UserService) { }
+  // employee data, iniial empty value
+  empEmail = '';
+  empADID = '';
+  empName = '';
 
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.httpClient.getLocations().subscribe((data: any) => {
-      console.log(data);
+    this.userService.getLocations().subscribe((data: any) => {
       this.countriesList = data.Country;
       this.LocationsList = data.Locations;
-
     });
 
   }
 
-  submitEmployeeDetails(EMployeeData: any) {
-    console.log(EMployeeData);
-  }
   countryChange(contryvalue) {
     this.countrySelected = contryvalue;
-
-
   }
-  searchEmployee(employeeID) {
-    this.empID = employeeID;
 
-    console.log(this.empID);
-    this.httpClient.getEmployee(this.empID).subscribe((data: any) => {
-      this.EmployeeData = data;
-      console.log(this.EmployeeData.Name);
+  searchEmployee() {
+    this.userService.getEmployee(this.searchQuery).subscribe((response: any) => {
+      console.log(response.data)
+      // Assigning data
+      this.empADID = response.data.EmployeeID;
+      this.empName = response.data.DisplayName;
+      this.empEmail = response.data.EmailID;
     });
+  }
 
+  submitEmployeeDetails(myForm) {
+    console.log(myForm.value);
 
-
+    // TODO: API call to submit data
   }
 }
